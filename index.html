@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wordsearch Generator</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="p5.js"></script>
+  <script src="generate.js"></script>
+</head>
+
+<body>
+  <main>
+    <h1>Wordsearch Generator</h1>
+    <div class="front">
+      <div class="front-container" id="custom-container">
+        <form id="custom-form" action="">
+          <h2>Enter Words To Be Used</h2>
+          <input type="text" name="word" placeholder="Enter a word">
+          <input type="button" name="addInput" onclick="addInput(event)" value="Add Another Word">
+        </form>
+        <div class="submit-container">
+          <input type="submit" name="submitButton" value="Create Wordsearch">
+          <input type="button" name="randomButton" onclick="showSection(event, 'random-container')" value="Create Random Wordsearch" class="sectionLinks">
+        </div>
+      </div>
+      <div class="front-container" id="random-container">
+        <form id="random-form" action="">
+          <h2>Random Wordsearch Settings</h2>
+          <label for="numWords">Number Of Words:</label>
+          <input type="number" name="numWords" value="15">
+          <label for="maxSize">Maximum Wordsearch Size:</label>
+          <input type="number" name="maxSize" value="15">
+        </form>
+        <div class="submit-container">
+          <input type="submit" name="submitButton" value="Create Wordsearch">
+          <input type="button" name="customButton" onclick="showSection(event, 'custom-container')" value="Create Custom Wordsearch" class="sectionLinks" id="defaultOpen">
+        </div>
+      </div>
+    </div>
+    <div id="canvas-container">
+
+    </div>
+  </main>
+</body>
+<script type="text/javascript">
+  document.getElementById("defaultOpen").click();
+</script>
+</html>
