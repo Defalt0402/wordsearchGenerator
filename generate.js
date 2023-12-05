@@ -69,7 +69,17 @@ function showSection(evt, name) {
 
 function addWordInput() {
   numWords++;
-  document.getElementById("wordInputs").innerHTML += '<input id="word' + numWords + '" type="text" name="word" placeholder="Enter a word">';
+
+  var newInput = document.createElement('input');
+  newInput.id = 'word' + numWords;
+  newInput.type = 'text';
+  newInput.name = 'word';
+  newInput.placeholder = 'Enter a word';
+
+  document.getElementById("word" + (numWords - 1)).after(newInput);
+
+
+  // document.getElementById("wordInputs").innerHTML += '<input id="word' + numWords + '" type="text" name="word" placeholder="Enter a word">';
 }
 
 function removeWordInput(){
