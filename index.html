@@ -6,8 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wordsearch Generator</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="p5.js"></script>
-  <script src="generate.js"></script>
 </head>
 
 <body>
@@ -16,15 +14,17 @@
     <div class="front">
       <div class="front-container" id="custom-container">
         <form id="custom-form" action="">
-          <h2>Enter Words To Be Used</h2>
-          <input id="word1" type="text" name="word" placeholder="Enter a word">
-          <input type="button" name="addInput" onclick="addWordInput()" value="Add Another Word">
-          <input type="button" name="removeInput" onclick="removeWordInput(event)" value="Remove Previous Word">
+          <div id="custom-form-left" action="">
+            <h2>Enter Words To Be Used</h2>
+            <input id="word1" type="text" name="word" placeholder="Enter a word">
+            <input type="button" name="addInput" onclick="addWordInput()" value="Add Another Word">
+            <input type="button" name="removeInput" onclick="removeWordInput(event)" value="Remove Previous Word">
+          </div>
+          <div class="submit-container">
+            <input type="submit" name="submitButton" value="Create Wordsearch">
+            <input type="button" name="randomButton" onclick="showSection(event, 'random-container')" value="Create Random Wordsearch" class="sectionLinks">
+          </div>
         </form>
-        <div class="submit-container">
-          <input type="submit" name="submitButton" value="Create Wordsearch">
-          <input type="button" name="randomButton" onclick="showSection(event, 'random-container')" value="Create Random Wordsearch" class="sectionLinks">
-        </div>
       </div>
       <div class="front-container" id="random-container">
         <form id="random-form" action="">
@@ -45,6 +45,8 @@
     </div>
   </main>
 </body>
+<script src="p5.js"></script>
+<script src="generate.js"></script>
 <script type="text/javascript">
   document.getElementById("defaultOpen").click();
 </script>
