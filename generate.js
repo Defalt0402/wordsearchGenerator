@@ -9,6 +9,9 @@ let RX = 1220;
 let BY = 1220;
 // Define side size of grid
 let SIZE = 1200;
+
+let words = [];
+let numWords = 1;
 /*
 randomForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -42,13 +45,13 @@ function draw(){
   text("Words To Find:", ((WIDTH - RX) / 2) + RX, 70);
 }
 
-function drawCustomSearch(){
-
-}
-
-function drawRandomSearch(){
-
-}
+// function drawCustomSearch(){
+//
+// }
+//
+// function drawRandomSearch(){
+//
+// }
 
 function showSection(evt, name) {
   var i, sections;
@@ -62,4 +65,14 @@ function showSection(evt, name) {
   // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(name).style.display = "flex";
 
+}
+
+function addWordInput() {
+  numWords++;
+  document.getElementById("wordInputs").innerHTML += '<input id="word' + numWords + '" type="text" name="word" placeholder="Enter a word">';
+}
+
+function removeWordInput(){
+  document.getElementById("word" + numWords).remove();
+  numWords--;
 }

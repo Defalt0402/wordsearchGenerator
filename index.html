@@ -17,8 +17,13 @@
       <div class="front-container" id="custom-container">
         <form id="custom-form" action="">
           <h2>Enter Words To Be Used</h2>
-          <input type="text" name="word" placeholder="Enter a word">
-          <input type="button" name="addInput" onclick="addInput(event)" value="Add Another Word">
+          <div id="wordInputs">
+            <input id="word1" type="text" name="word" placeholder="Enter a word">
+          </div>
+          <div >
+            <input type="button" name="addInput" onclick="addWordInput()" value="Add Another Word">
+            <input type="button" name="removeInput" onclick="removeWordInput(event)" value="Remove Previous Word">
+          </div>
         </form>
         <div class="submit-container">
           <input type="submit" name="submitButton" value="Create Wordsearch">
