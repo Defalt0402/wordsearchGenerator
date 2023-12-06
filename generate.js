@@ -19,6 +19,8 @@ let gameGrid = [];
 let usedWords = [];
 // Valid directions are Right, Up, Down, Up Right, Down Right
 let directions = ["R", "U", "D", "UR", "DR"];
+
+let searchReady = false;
 /*
 randomForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -36,15 +38,18 @@ function draw(){
   background(100);
   stroke(200);
   strokeWeight(3);
-
+  fill(160);
   square(LX, TY, SIZE);
-  noFill();
 
   textAlign(CENTER, CENTER);
   textSize(52);
   fill(200);
   stroke(0);
   text("Words To Find:", ((WIDTH - RX) / 2) + RX, 70);
+
+  if (searchReady){
+    drawSearch();
+  }
 }
 
 // Creates game grid array of maxLength x maxLength
@@ -90,7 +95,7 @@ function placeWord(word){
 
       // check every letter of word against grid
       for (var j = 0; j < word.length; j++) {
-        if (x == maxLength || y == maxLength) {
+        if (x == maxLength || y == maxLength || y < 0) {
           good = false;
           break;
         } else if (word[j] != gameGrid[y][x] && gameGrid[y][x] != "_") {
@@ -139,7 +144,7 @@ function placeWord(word){
 
       // Check every letter in the word agaisnt the grid
       for (var j = 0; j < word.length; j++) {
-        if (x >= maxLength || y >= maxLength){
+        if (x >= maxLength || y >= maxLength || y < 0){
           good = false;
           break;
         } else if (word[j] != gameGrid[y][x] && gameGrid[y][x] != "_") {
@@ -217,13 +222,25 @@ function placeWord(word){
     return true;
 }
 
-function drawCustomSearch(){
-}
+function drawSearch(){
+  // get box size
+  var boxSize = SIZE/maxLength;
+  for (var i = 0; i < maxLength; i++) {
+    for (var j = 0; j < maxLength; j++) {
+      stroke(200);
+      strokeWeight(3);
+      noFill();
+      square(LX + (j * boxSize), TY + (i * boxSize), boxSize);
 
-//
-// function drawRandomSearch(){
-//
-// }
+
+      textAlign(CENTER, CENTER);
+      textSize(52);
+      fill(200);
+      stroke(0);
+      text(gameGrid[i][j], LX + (j * boxSize) + (boxSize/2), TY + (i * boxSize) + (boxSize/2));
+    }
+  }
+}
 
 // Add submit event listener to custom form
 customForm.addEventListener("submit", (e) => {
@@ -258,7 +275,20 @@ customForm.addEventListener("submit", (e) => {
     }
   }
 
-  drawCustomSearch();
+  searchReady = true;
+
+  console.log(gameGrid);
+
+  sections = document.getElementsByClassName("front-container");
+  for (i = 0; i < sections.length; i++) {
+    sections[i].style.display = "none";
+  }
+
+  front = document.getElementsByClassName("front");
+  for (var i = 0; i < front.length; i++) {
+    front[i].style.height = "0";
+  }
+  document.getElementById("canvas-container").style.display = "flex";
 });
 
 function showSection(evt, name) {
