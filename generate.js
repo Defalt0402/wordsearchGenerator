@@ -225,6 +225,8 @@ function placeWord(word){
 function drawSearch(){
   // get box size
   var boxSize = SIZE/maxLength;
+
+  // Place each letter in the correct grid position
   for (var i = 0; i < maxLength; i++) {
     for (var j = 0; j < maxLength; j++) {
       stroke(200);
@@ -238,6 +240,20 @@ function drawSearch(){
       fill(200);
       stroke(0);
       text(gameGrid[i][j], LX + (j * boxSize) + (boxSize/2), TY + (i * boxSize) + (boxSize/2));
+    }
+  }
+
+  // Define word spacing
+  var wordSeperationX = (WIDTH - RX)/3;
+  var wordSeperationY = 45;
+  for (var i = 0; i < usedWords.length; i++) {
+    for (var j = 0; j < 2; j++) {
+      textAlign(CENTER, CENTER);
+      textSize(24);
+      fill(200);
+      stroke(0);
+      text(usedWords[i], RX + wordSeperationX + (j * wordSeperationX), 140 + wordSeperationY + (Math.floor(i/2) * wordSeperationY));
+      i++;
     }
   }
 }
@@ -276,8 +292,6 @@ customForm.addEventListener("submit", (e) => {
   }
 
   searchReady = true;
-
-  console.log(gameGrid);
 
   sections = document.getElementsByClassName("front-container");
   for (i = 0; i < sections.length; i++) {
