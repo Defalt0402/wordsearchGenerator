@@ -15,6 +15,7 @@ let words = [];
 let numWords = 1;
 let maxLength = 0;
 let gameGrid = [];
+let usedWords = [];
 // Valid directions are Right, Up, Down, Up Right, Down Right
 let directions = ["R", "U", "D", "UR", "DR"];
 /*
@@ -24,21 +25,6 @@ randomForm.addEventListener("submit", (e) => {
   drawRandomSearch();
 });
 */
-
-customForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  console.log("1");
-  for (var i = 1; i < numWords + 1; i++) {
-    word = document.getElementById("word" + i).value;
-    if (word.length > maxLength) {
-      maxLength = word.length;
-    }
-    words.push(word);
-  }
-
-  drawCustomSearch();
-});
 
 function setup(){
   var canvas = createCanvas(WIDTH, HEIGHT);
@@ -71,52 +57,200 @@ function makeGrid() {
 
 /* Attempts to place a word into the grid
 *  @param   word  The word to be placed in the grid
-*  @param   corner    A boolean value that determines if the value should be placed in a corner
-*  @return  boolean   True if successful, False otherwise
+*  @return  boolean   true if successful, false otherwise
 */
-function placeWord(word, corner){
-  var good = False;
+function placeWord(word){
+  // Declare variables to store if and where word can be placed
+  var good = false;
   var goodDirection = null;
   var goodX = null;
   var goodY = null;
-  for (var i = 0; i < 100; i++) {
-    if (corner) {
 
-    } else {
-      var x = Math.floor(Math.random() * maxLength);
-      var y = Math.floor(Math.random() * maxLength);
-      var direction = directions[Math.floor(Math.random() * directions.length)];
+  // If in corner, only check corners
+  // Otherwise, loop up to 100 times to try place word in grid
+  if (word.length == maxLength) {
+    // Corners TL, BL, TR, BR
+    // corners contains all corner x and y positions, along with their possible directions
+    corners = [["R", 0, 0],
+               ["D", 0, 0],
+               ["DR", 0, 0],
+               ["U", 0, maxLength],
+               ["R", 0, maxLength],
+               ["UR", 0, maxLength],
+               ["D", maxLength, 0],
+               ["U", maxLength, maxLength]];
+
+    for (var i = 0; i < corners.length; i++) {
+      direction = corners[i][0];
+      x = corners[i][1];
+      startX = x;
+      y = corners[i][2];
+      startY = y;
+
+      // check every letter of word against grid
       for (var j = 0; j < word.length; j++) {
-        if (word[j] != gameGrid[x][y] || word[j] != "_") {
+        if (x == maxLength || y == maxLength) {
+          good = false;
+          break;
+        } else if (word[j] != gameGrid[y][x] && gameGrid[y][x] != "_") {
+          good = false;
           break;
         } else {
+          good = true;
+          // Move to next position based on direction
           switch(direction){
             case "R":
+              x++;
+              break;
             case "U":
+              y--;
+              break;
             case "D":
+              y++;
+              break;
             case "UR":
+              x++;
+              y--;
+              break;
             case "DR":
+              y++;
+              x++;
+              break;
             default:
-            break;
+              break;
           }
         }
       }
+
+      // If the word can be placed in the grid, break
+      if (good) {
+        break;
+      }
     }
+  } else {
+    for (var i = 0; i < 100; i++) {
+      // Randomly choose starting x and y position for word, as well as thr direction
+      var x = Math.floor(Math.random() * maxLength);
+      startX = x;
+      var y = Math.floor(Math.random() * maxLength);
+      startY = y;
+      var direction = directions[Math.floor(Math.random() * directions.length)];
+
+      // Check every letter in the word agaisnt the grid
+      for (var j = 0; j < word.length; j++) {
+        if (x >= maxLength || y >= maxLength){
+          good = false;
+          break;
+        } else if (word[j] != gameGrid[y][x] && gameGrid[y][x] != "_") {
+          good = false;
+          break;
+        } else {
+          good = true;
+          // Move to next position based on direction
+          switch(direction){
+            case "R":
+              x++;
+              break;
+            case "U":
+              y--;
+              break;
+            case "D":
+              y++;
+              break;
+            case "UR":
+              x++;
+              y--;
+              break;
+            case "DR":
+              y++;
+              x++;
+              break;
+            default:
+              break;
+          }
+        }
+      }
+
+      // If a valid position is found
+      if (good) {
+        break;
+      }
+    }
+  }
+
+    // If loop has exited without valid word position
+    if (!good) {
+      return false;
+    }
+
+    // Reset x and y positions to original x and y
+    // Place each letter of the word in the grid
+    x = startX;
+    y = startY;
+    for (var i = 0; i < word.length; i++) {
+      // Move to next position based on direction
+      gameGrid[y][x] = word[i];
+      switch(direction){
+        case "R":
+          x++;
+          break;
+        case "U":
+          y--;
+          break;
+        case "D":
+          y++;
+          break;
+        case "UR":
+          x++;
+          y--;
+          break;
+        case "DR":
+          y++;
+          x++;
+          break;
+        default:
+          break;
+      }
+    }
+
+    return true;
 }
 
 function drawCustomSearch(){
-  gameGrid = makeGrid();
-  console.log(grid);
-  for (word in words) {
-    if (word.length = maxLength) {
-      // Try place in
-    }
-  }
 }
+
 //
 // function drawRandomSearch(){
 //
 // }
+
+// Add submit event listener to custom form
+customForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  // Add all words into an array
+  for (var i = 1; i < numWords + 1; i++) {
+    word = document.getElementById("word" + i).value;
+    if (word.length > maxLength) {
+      maxLength = word.length;
+    }
+    words.push(word);
+  }
+
+  gameGrid = makeGrid();
+
+  // Attempt to add all words into the grid
+  for (var i = 0; i < words.length; i++) {
+    // Add the word
+    // If successful, add word to usedWords list
+    if (placeWord(words[i])) {
+        usedWords.push(words[i]);
+    }
+  }
+
+  console.log(gameGrid);
+  drawCustomSearch();
+});
 
 function showSection(evt, name) {
   var i, sections;
