@@ -1,4 +1,4 @@
-// let randomForm = document.getElementById("random-form");
+let randomForm = document.getElementById("random-form");
 let customForm = document.getElementById("custom-form");
 let WIDTH = 1754;
 let HEIGHT = 1240;
@@ -21,13 +21,7 @@ let usedWords = [];
 let directions = ["R", "U", "D", "UR", "DR"];
 
 let searchReady = false;
-/*
-randomForm.addEventListener("submit", (e) => {
-  e.preventDefault();
 
-  drawRandomSearch();
-});
-*/
 
 function setup(){
   var canvas = createCanvas(WIDTH, HEIGHT);
@@ -252,6 +246,7 @@ function drawSearch(){
       textSize(24);
       fill(200);
       stroke(0);
+      console.log(usedWords[i]);
       text(usedWords[i], RX + wordSeperationX + (j * wordSeperationX), 140 + wordSeperationY + (Math.floor(i/2) * wordSeperationY));
       i++;
     }
@@ -305,6 +300,75 @@ customForm.addEventListener("submit", (e) => {
   document.getElementById("canvas-container").style.display = "flex";
 });
 
+async function getRandomWord(length) {
+  try {
+    const response = await fetch("https://random-word-api.herokuapp.com/word?length=" + length);
+
+    const data = await response.json();
+
+    const randomWord = data[0];
+
+    return randomWord;
+  } catch (error) {
+    console.error(error);
+    return "";
+  }
+}
+
+
+randomForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  numWords = parseInt(document.getElementById("numWords").value, 10);
+  maxSize = parseInt(document.getElementById("maxSize").value, 10);
+
+  for (var i = 0; i < numWords; i++) {
+    word = await getRandomWord(Math.floor(Math.random() * (maxSize + 1)));
+    if (word != "" && word != null) {
+      words.push(word.toUpperCase());
+      if (word.length > maxLength) {
+        maxLength = word.length;
+      }
+    }
+  }
+
+  gameGrid = makeGrid();
+
+  // Attempt to add all words into the grid
+  for (var i = 0; i < words.length; i++) {
+    // Add the word
+    // If successful, add word to usedWords list
+    if (placeWord(words[i])) {
+        usedWords.push(words[i]);
+    }
+  }
+
+  console.log(usedWords);
+
+  // Replaces all remaining _ characters with a random letter
+  for (var i = 0; i < maxLength; i++) {
+    for (var j = 0; j < maxLength; j++) {
+      if (gameGrid[i][j] == "_"){
+        gameGrid[i][j] = letters[Math.floor(Math.random() * letters.length)];
+      }
+    }
+  }
+
+  searchReady = true;
+
+  sections = document.getElementsByClassName("front-container");
+  for (i = 0; i < sections.length; i++) {
+    sections[i].style.display = "none";
+  }
+
+  front = document.getElementsByClassName("front");
+  for (var i = 0; i < front.length; i++) {
+    front[i].style.height = "0";
+  }
+  document.getElementById("canvas-container").style.display = "flex";
+});
+
+
 function showSection(evt, name) {
   var i, sections;
 
@@ -330,8 +394,6 @@ function addWordInput() {
 
   document.getElementById("word" + (numWords - 1)).after(newInput);
 
-
-  // document.getElementById("wordInputs").innerHTML += '<input id="word' + numWords + '" type="text" name="word" placeholder="Enter a word">';
 }
 
 function removeWordInput(){
