@@ -11,6 +11,7 @@ let BY = 1220;
 let SIZE = 1200;
 
 // Define attributes of words for search
+let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 let words = [];
 let numWords = 1;
 let maxLength = 0;
@@ -234,7 +235,7 @@ customForm.addEventListener("submit", (e) => {
     if (word.length > maxLength) {
       maxLength = word.length;
     }
-    words.push(word);
+    words.push(word.toUpperCase());
   }
 
   gameGrid = makeGrid();
@@ -248,7 +249,15 @@ customForm.addEventListener("submit", (e) => {
     }
   }
 
-  console.log(gameGrid);
+  // Replaces all remaining _ characters with a random letter
+  for (var i = 0; i < maxLength; i++) {
+    for (var j = 0; j < maxLength; j++) {
+      if (gameGrid[i][j] == "_"){
+        gameGrid[i][j] = letters[Math.floor(Math.random() * letters.length)];
+      }
+    }
+  }
+
   drawCustomSearch();
 });
 
