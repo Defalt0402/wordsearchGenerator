@@ -46,6 +46,14 @@ function draw(){
   }
 }
 
+function keyTyped() {
+  if (key === 's' || key === 'S') {
+    saveCanvas('search', 'jpg');
+  }
+
+  return false;
+}
+
 // Creates game grid array of maxLength x maxLength
 function makeGrid() {
   var arr = [];
@@ -246,7 +254,6 @@ function drawSearch(){
       textSize(24);
       fill(200);
       stroke(0);
-      console.log(i);
       text(usedWords[i], RX + wordSeperationX + (j * wordSeperationX), 140 + wordSeperationY + (Math.floor(i/2) * wordSeperationY));
       i++;
       if (i >= usedWords.length) {
@@ -347,8 +354,6 @@ randomForm.addEventListener("submit", async (e) => {
         usedWords.push(words[i]);
     }
   }
-
-  console.log(usedWords);
 
   // Replaces all remaining _ characters with a random letter
   for (var i = 0; i < maxLength; i++) {
