@@ -28,11 +28,13 @@
       </div>
       <div class="front-container" id="random-container">
         <form id="random-form" action="">
-          <h2>Random Wordsearch Settings</h2>
-          <label for="numWords">Number Of Words:</label>
-          <input id="numWords" type="number" name="numWords" value="15">
-          <label for="maxSize">Maximum Wordsearch Size:</label>
-          <input id="maxSize" type="number" name="maxSize" value="15">
+          <div id="random-form-left">
+            <h2>Random Wordsearch Settings</h2>
+            <label for="numWords">Number Of Words:</label>
+            <input id="numWords" type="number" name="numWords" value="15">
+            <label for="maxSize">Maximum Wordsearch Size:</label>
+            <input id="maxSize" type="number" name="maxSize" value="15">
+          </div>
           <div class="submit-container">
             <input type="submit" name="submitButton" value="Create Wordsearch">
             <input type="button" name="customButton" onclick="showSection(event, 'custom-container')" value="Create Custom Wordsearch" class="sectionLinks" id="defaultOpen">

@@ -62,6 +62,17 @@ form {
   text-align: center;
 }
 
+#random-form-left {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 80%;
+  width: 70%;
+  margin: 3%;
+  text-align: center;
+}
+
 form h2{
   font-size: 4vh;
 }

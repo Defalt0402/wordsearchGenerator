@@ -246,10 +246,14 @@ function drawSearch(){
       textSize(24);
       fill(200);
       stroke(0);
-      console.log(usedWords[i]);
+      console.log(i);
       text(usedWords[i], RX + wordSeperationX + (j * wordSeperationX), 140 + wordSeperationY + (Math.floor(i/2) * wordSeperationY));
       i++;
+      if (i >= usedWords.length) {
+          break;
+      }
     }
+    i--;
   }
 }
 
@@ -273,9 +277,10 @@ customForm.addEventListener("submit", (e) => {
     // Add the word
     // If successful, add word to usedWords list
     if (placeWord(words[i])) {
-        usedWords.push(words[i]);
+      usedWords.push(words[i]);
     }
   }
+
 
   // Replaces all remaining _ characters with a random letter
   for (var i = 0; i < maxLength; i++) {
